@@ -35,7 +35,11 @@ Validator.localize('zh_CN', zhCN)
 //   .use(Button)
 //   .use(Tabbar)
 //   .use(TabbarItem)
-
+Vue.prototype.$sleep = time => {
+  return new Promise((resolve, reject) => {
+    window.setTimeout(resolve, time)
+  })
+}
 Vue.config.productionTip = false
 
 new Vue({
