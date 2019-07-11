@@ -13,8 +13,14 @@ import 'amfe-flexible'
  */
 import Vant from 'vant'
 import 'vant/lib/index.css'
+import VeeValidate, { Validator } from 'vee-validate'
+import zhCN from 'vee-validate/dist/locale/zh_CN'
 
 Vue.use(Vant)
+Vue.use(VeeValidate, {
+  events: '' // 禁用默认事件验证
+})
+Validator.localize('zh_CN', zhCN)
 
 /**
  * 后面我们再配置为按需引入的方式（减小代码打包体积）
