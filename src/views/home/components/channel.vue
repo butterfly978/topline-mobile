@@ -1,15 +1,29 @@
 <template>
-  <van-popup v-model="show" position="bottom" :style="{ height: '95%' }"/>
+<!--
+  v-model 是：
+    v-bind:value="数据"
+    v-on:input="数据 = $event"
+ -->
+  <van-popup :value="value" @input="$emit('input', $event)" position="bottom" :style="{ height: '95%' }"/>
 </template>
 
 <script>
 export default {
   name: 'HomeChannel',
-  props: {},
-  data () {
-    return {
-      show: true
+  props: {
+    value: {
+      type: Boolean,
+      default: false
     }
+  },
+  data () {
+    return {}
+  },
+  methods: {
+    // handleInput (e) {
+    //   console.log('handleInput => s', e)
+    //   this.$emit('input', e)
+    // }
   }
 }
 </script>
