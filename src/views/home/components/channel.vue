@@ -18,9 +18,10 @@
         </div>
       </div>
       <van-grid class="channel-content" :gutter="10" clickable>
-        <van-grid-item v-for="(item, index) in userChannels" :key="item.id" text="文字">
-          <span class="text" :class="{ active: index === activeIndex }">{{ item.name }}</span>
-          <!-- <van-icon class="close-icon" name="close" /> -->
+        <van-grid-item v-for="item in recommendChannels" :key="item.id">
+          <div class="info">
+            <span class="text">{{ item.name }}</span>
+          </div>
         </van-grid-item>
       </van-grid>
     </div>
@@ -66,6 +67,16 @@ export default {
   data () {
     return {
       allChannels: []
+    }
+  },
+  computed: {
+    /**
+     * 该计算属性用于处理获取推荐数据（也就是不包含用户频道列表的其它所有频道列表）
+     */
+    recommendChannels () {
+      // 拿到所有重复的数据 id
+      const duplicates = this.userChannels.map(item => item.id)
+      return this.allChannels.filter(item => !duplicates.includes(item.id))
     }
   },
   created () {
