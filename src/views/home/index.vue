@@ -55,8 +55,9 @@
     </van-tabbar>
     <!-- /底部导航 -->
     <!-- 频道组件 -->
-    <!-- :value="isChannelShow" -->
-    <home-channel v-model="isChannelShow" />
+    <!-- :value="isChannelShow"
+    @input="isChannelShow = $event" -->
+    <home-channel v-model="isChannelShow" :user-channels="channels" />
     <!-- /频道组件 -->
   </div>
 </template>
