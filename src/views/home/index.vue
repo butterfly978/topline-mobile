@@ -57,7 +57,7 @@
     <!-- 频道组件 -->
     <!-- :value="isChannelShow"
     @input="isChannelShow = $event" -->
-    <home-channel v-model="isChannelShow" :user-channels="channels" />
+    <home-channel v-model="isChannelShow" :user-channels="channels" :active-index="activeChannelIndex" />
     <!-- /频道组件 -->
   </div>
 </template>
