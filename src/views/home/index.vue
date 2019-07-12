@@ -56,8 +56,11 @@
     <!-- /底部导航 -->
     <!-- 频道组件 -->
     <!-- :value="isChannelShow"
-    @input="isChannelShow = $event" -->
-    <home-channel v-model="isChannelShow" :user-channels="channels" :active-index="activeChannelIndex" />
+    @input="isChannelShow = $event"
+    .sync 修饰符会自动监听一个事件：
+    @update:user-channels="channels = $event"
+    简单来说，给props 数组加 .sync 其实就是v-model的作用只不过一个组件只能有一个v-model -->
+    <home-channel v-model="isChannelShow" :user-channels.sync="channels" :active-index="activeChannelIndex" />
     <!-- /频道组件 -->
   </div>
 </template>
