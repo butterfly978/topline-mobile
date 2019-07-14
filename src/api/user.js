@@ -18,12 +18,15 @@ export const login = ({ mobile, code }) => {
   })
 }
 
-// 没有其它逻辑的话可以直接一步简写
-// export const login = ({ mobile, code }) => request({
-//   method: 'POST',
-//   url: '/app/v1_0/authorizations',
-//   data: {
-//     mobile,
-//     code
-//   }
-// })
+/**
+ * 拉黑用户（添加黑名单）
+ */
+export const addBlacklist = userId => {
+  return request({
+    method: 'POST',
+    url: '/app/v1_0/user/blacklists',
+    data: {
+      target: userId
+    }
+  })
+}

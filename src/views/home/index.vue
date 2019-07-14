@@ -34,8 +34,9 @@
           >
             <!--
               列表中的内容
+              对于模板中的错误，推荐的调试方式就是：
             -->
-            <van-cell v-for="item in channelItem.articles" :key="item.art_id" :title="item.title">
+            <van-cell v-for="item in channelItem.articles" :key="item.art_id.toString()" :title="item.title">
               <div slot="label">
                 <template v-if="item.cover.type">
                   <van-grid :border="false" :column-num="3">
@@ -95,7 +96,7 @@
       <van-cell-group v-if="!toggleRubbish">
         <van-cell title="不感兴趣" @click="handleDislick" />
         <van-cell title="反馈垃圾内容" is-link @click="toggleRubbish = true" />
-        <van-cell title="反馈垃圾内容" />
+        <van-cell title="拉黑作者" @click="handleAddBlacklist" />
       </van-cell-group>
       <van-cell-group v-else>
         <van-cel icon="arrow-left" @click="toggleRubbish = false" />
@@ -112,6 +113,7 @@
 <script>
 import { getUserChannels } from '@/api/channel'
 import { getArticles, dislikeArticle } from '@/api/article'
+import { addBlacklist } from '@/api/user'
 import HomeChannel from './components/channel'
 export default {
   name: 'HomeIndex',
@@ -283,6 +285,12 @@ export default {
       const delIndex = articles.findIndex(item => item.art_id.toString() === articleId)
       // 把本条数据移除
       articles.splice(delIndex, 1)
+      this.$toast('操作成功')
+    },
+    async handleAddBlacklist () {
+      await addBlacklist(this.currentArticle.aut_id)
+      this.isMoreActionShow = false
+      this.$toast('操作成功')
     }
   }
 }
