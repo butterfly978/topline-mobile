@@ -89,6 +89,22 @@
     简单来说，给props 数组加 .sync 其实就是v-model的作用只不过一个组件只能有一个v-model -->
     <home-channel v-model="isChannelShow" :user-channels.sync="channels" :active-index.sync="activeChannelIndex" />
     <!-- /频道组件 -->
+    <!-- 更多操作弹框 -->
+    <van-dialog v-model="isMoreActionShow" :showConfirmButton="false">
+      <van-cell-group v-if="!toggleRubbish">
+        <van-cell title="不感兴趣" />
+        <van-cell title="反馈垃圾内容" is-link @click="toggleRubbish = true" />
+        <van-cell title="反馈垃圾内容" />
+      </van-cell-group>
+      <van-cell-group v-else>
+        <van-cel icon="arrow-left" @click="toggleRubbish = false" />
+        <van-cel title="标题夸张" />
+        <van-cel title="低俗色情" />
+        <van-cel title="错别字多" />
+        <van-cel title="旧闻重复" />
+      </van-cell-group>
+    </van-dialog>
+    <!-- /更多操作弹框 -->
   </div>
 </template>
 
@@ -109,7 +125,9 @@ export default {
       loading: false,
       finished: false,
       pullRefreshLoading: false,
-      isChannelShow: false // 控制频道面板的显示状态
+      isChannelShow: false, // 控制频道面板的显示状态
+      isMoreActionShow: true, // 控制更多操作弹框面板
+      toggleRubbish: false // 控制反馈垃圾弹框内容的显示
     }
   },
   // filters: {
