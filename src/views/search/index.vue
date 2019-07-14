@@ -18,6 +18,7 @@
 
 <script>
 import { getSuggestion } from '@/api/search'
+import { debounce } from 'lodash'
 export default {
   name: 'SearchIndex',
   data () {
@@ -27,7 +28,11 @@ export default {
     }
   },
   watch: {
-    async searchText (newVal) {
+    // debounce 接收两个参数
+    // 第1参数：执行你的业务逻辑的参数函数
+    // 第2参数：防抖时间
+    // 当你同一时间调用频率过快的时候，只有停下来经过指定的时间才会来调用
+    searchText: debounce(async function (newVal) {
       newVal = newVal.trim() // 去除首尾空格
       // 如果数据为空，则什么都不做
       if (!newVal) {
@@ -36,7 +41,7 @@ export default {
       // 如果数据不为空，则请求联想建议自动补全
       const data = await getSuggestion(newVal)
       this.suggestions = data.options
-    }
+    }, 500)
   }
 }
 </script>
