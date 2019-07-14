@@ -35,31 +35,37 @@
             <!--
               列表中的内容
             -->
-            <van-cell
-              v-for="item in channelItem.articles"
-              :key="item.art_id"
-              :title="item.title"
-            >
-              <p slot="label">
-                <span>{{ item.aut_name }}</span>
-                &nbsp;
-                <span>{{ item.comm_count }}评论</span>
-                &nbsp;
-                <!-- <span>{{ relativeTime(item.pubdate) }}</span> -->
-                <!--
-                  | relativeTime 就是在调用过滤器函数
-                  过滤器函数接收的参数就是 | 前面的 item.pubdate
-                  过滤器函数返回值会输出到这里
-                 -->
-                 <!--
-                  过滤器说白了就是函数，在模板中调用函数的另一种方式
-                  一般用于格式化输出内容，其中不会有太多业务逻辑，一般都是对字符串的格式化处理
-                  过滤器可以定义到：
-                    全局：Vue.filter('过滤器名称')，可以在任何组件中使用
-                    局部：filters 选项，只能在组件内部使用
-                 -->
-                 <span>{{ item.pubdate | relativeTime }}</span>
-              </p>
+            <van-cell v-for="item in channelItem.articles" :key="item.art_id" :title="item.title">
+              <div slot="label">
+                <template v-if="item.cover.type">
+                  <van-grid :border="false" :column-num="3">
+                    <van-grid-item v-for="(img, index) in item.cover.image" :key="index">
+                      <van-image :src="img" lazy-load></van-image>
+                    </van-grid-item>
+                  </van-grid>
+                </template>
+                <p>
+                  <span>{{ item.aut_name }}</span>
+                  &nbsp;
+                  <span>{{ item.comm_count }}评论</span>
+                  &nbsp;
+                  <!-- <span>{{ relativeTime(item.pubdate) }}</span> -->
+                  <!--
+                    | relativeTime 就是在调用过滤器函数
+                    过滤器函数接收的参数就是 | 前面的 item.pubdate
+                    过滤器函数返回值会输出到这里
+                  -->
+                  <!--
+                    过滤器说白了就是函数，在模板中调用函数的另一种方式
+                    一般用于格式化输出内容，其中不会有太多业务逻辑，一般都是对字符串的格式化处理
+                    过滤器可以定义到：
+                      全局：Vue.filter('过滤器名称')，可以在任何组件中使用
+                      局部：filters 选项，只能在组件内部使用
+                  -->
+                  <span>{{ item.pubdate | relativeTime }}</span>
+                  <van-icon class="close" name="close" />
+                </p>
+              </div>
             </van-cell>
           </van-list>
         </van-pull-refresh>
@@ -262,5 +268,9 @@ export default {
   align-items: center;
   background: #fff;
   opacity: .7;
+}
+.channel-tabs .close {
+  float: right;
+  font-size: 30px;
 }
 </style>

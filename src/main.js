@@ -11,13 +11,17 @@ import 'amfe-flexible'
 /**
  * 现在我们简单粗暴全引进来，方便使用
  */
-import Vant from 'vant'
+// import Vant from 'vant'
+// import { Lazyload } from 'vant'
+import Vant, { Lazyload } from 'vant'
 import 'vant/lib/index.css'
 import VeeValidate, { Validator } from 'vee-validate'
 import zhCN from 'vee-validate/dist/locale/zh_CN'
 import relativeTime from './filters/relative-time'
 
 Vue.use(Vant)
+// 注册Vant的图片懒加载自定义指令
+Vue.use(Lazyload)
 // 注册一个全局过滤器：处理相对时间
 Vue.filter('relativeTime', relativeTime)
 Vue.use(VeeValidate, {
