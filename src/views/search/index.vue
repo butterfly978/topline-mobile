@@ -3,10 +3,7 @@
     <van-search placeholoder="请输入搜索关键词" v-model="searchText" show-action/>
     <!-- 联想建议列表 -->
     <van-cell-group>
-      <van-cell title="hello" icon="search" />
-      <van-cell title="hello" icon="search" />
-      <van-cell title="hello" icon="search" />
-      <van-cell title="hello" icon="search" />
+      <van-cell icon="search" v-for="item in suggestions" :key="item" :title="item" />
     </van-cell-group>
     <!-- /联想建议列表 -->
     <!-- 历史记录 -->
@@ -20,11 +17,25 @@
 </template>
 
 <script>
+import { getSuggestion } from '@/api/search'
 export default {
   name: 'SearchIndex',
   data () {
     return {
-      searchText: ''
+      searchText: '',
+      suggestions: []
+    }
+  },
+  watch: {
+    async searchText (newVal) {
+      newVal = newVal.trim() // 去除首尾空格
+      // 如果数据为空，则什么都不做
+      if (!newVal) {
+        return
+      }
+      // 如果数据不为空，则请求联想建议自动补全
+      const data = await getSuggestion(newVal)
+      this.suggestions = data.options
     }
   }
 }
