@@ -3,7 +3,12 @@
     <van-search placeholoder="请输入搜索关键词" v-model="searchText" show-action/>
     <!-- 联想建议列表 -->
     <van-cell-group>
-      <van-cell icon="search" v-for="item in suggestions" :key="item" :title="item" />
+      <van-cell icon="search" v-for="item in suggestions" :key="item" :title="item">
+        <!-- {{}} 无法输出html字符内容 -->
+        <!-- v-html指令才会解析字符串内容中的html -->
+        <!-- 过滤只能在{{}} 和 v-bind 中 -->
+        <div slot="titlt" v-html="hightlight(item, searchText)"></div>
+      </van-cell>
     </van-cell-group>
     <!-- /联想建议列表 -->
     <!-- 历史记录 -->
@@ -42,6 +47,11 @@ export default {
       const data = await getSuggestion(newVal)
       this.suggestions = data.options
     }, 500)
+  },
+  methods: {
+    hightlight (text, keyword) {
+      return text.toLowerCase().split(keyword).join(`<span style="color: red;">${keyword}</span>`)
+    }
   }
 }
 </script>
