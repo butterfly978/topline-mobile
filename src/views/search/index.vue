@@ -1,9 +1,11 @@
 <template>
   <div>
-    <van-search placeholoder="请输入搜索关键词" v-model="searchText" show-action/>
+    <form action="/">
+      <van-search placeholoder="请输入搜索关键词" v-model="searchText" show-action @search="handleSearch(searchText)"/>
+    </form>
     <!-- 联想建议列表 -->
     <van-cell-group>
-      <van-cell icon="search" v-for="item in suggestions" :key="item" :title="item">
+      <van-cell icon="search" v-for="item in suggestions" :key="item" @click="handleSearch(item)">
         <!-- {{}} 无法输出html字符内容 -->
         <!-- v-html指令才会解析字符串内容中的html -->
         <!-- 过滤只能在{{}} 和 v-bind 中 -->
@@ -51,6 +53,14 @@ export default {
   methods: {
     hightlight (text, keyword) {
       return text.toLowerCase().split(keyword).join(`<span style="color: red;">${keyword}</span>`)
+    },
+    handleSearch (q) {
+      this.$router.push({
+        name: 'search-result',
+        params: {
+          q
+        }
+      })
     }
   }
 }
