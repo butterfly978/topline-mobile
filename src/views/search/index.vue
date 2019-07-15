@@ -16,9 +16,15 @@
     <!-- 历史记录 -->
     <van-cell-group v-else>
       <van-cell title="历史记录">
-        <van-icon slot="right-icon" name="delete" style="line-height: inherit;"/>
+        <van-icon v-show="!isDeleteShow" slot="right-icon" name="delete" style="line-height: inherit;" @click="isDeleteShow = true"/>
+        <div v-show="isDeleteShow">
+          <span style="margin-right: 10px;" @click="serachHistories = []">全部删除</span>
+          <span @click="isDeleteShow = false">完成</span>
+        </div>
       </van-cell>
-      <van-cell v-for="item in serachHistories" :key="item" :title="item" />
+      <van-cell v-for="(item, index) in serachHistories" :key="item" :title="item">
+        <van-icon v-show="isDeleteShow" slot="right-icon" name="close" style="line-height: inherit;" @click="serachHistories.splice(index, 1)"/>
+      </van-cell>
     </van-cell-group>
     <!-- /历史记录 -->
   </div>
@@ -31,9 +37,10 @@ export default {
   name: 'SearchIndex',
   data () {
     return {
-      searchText: '',
-      suggestions: [],
-      searchHistories: JSON.parse(window.localStorage.getItem('serach-histories')) // 搜索历史记录
+      searchText: '', // 搜索输入的文本
+      suggestions: [], // 联想建议
+      serachHistories: JSON.parse(window.localStorage.getItem('serach-histories')), // 搜索历史记录
+      isDeleteShow: false
     }
   },
   watch: {
@@ -50,7 +57,20 @@ export default {
       // 如果数据不为空，则请求联想建议自动补全
       const data = await getSuggestion(newVal)
       this.suggestions = data.options
-    }, 500)
+    }, 500),
+    serachHistories: {
+      handler () {
+        // 保存搜索历史记录
+        window.localStorage.setItem(
+          'serach-histories',
+          JSON.stringify([...new Set(this.serachHistories)])
+        )
+      },
+      deep: true // 建议引用类型数据都配置为深度监视
+    }
+  },
+  deactivated () {
+    this.$destory()
   },
   methods: {
     hightlight (text, keyword) {
@@ -60,19 +80,14 @@ export default {
       if (!q.length) {
         return
       }
-      this.searchHistories.push(q)
-      // 保存搜索历史记录
-      window.localStorage.setItem(
-        'serach-histories',
-        JSON.stringify([...new Set(this.searchHistories)])
-      )
+      this.serachHistories.unshift(q)
       // 跳转到搜索页面
-      // this.$router.push({
-      //   name: 'search-result',
-      //   params: {
-      //     q
-      //   }
-      // })
+      this.$router.push({
+        name: 'search-result',
+        params: {
+          q
+        }
+      })
       // this.$router.push('/search/' + q)
       // this.$router.push(`/search/${q}`)
     }
