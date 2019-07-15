@@ -4,7 +4,7 @@
       <van-search placeholoder="请输入搜索关键词" v-model="searchText" show-action @search="handleSearch(searchText)"/>
     </form>
     <!-- 联想建议列表 -->
-    <van-cell-group>
+    <van-cell-group v-if="suggestions.length && searchText.length">
       <van-cell icon="search" v-for="item in suggestions" :key="item" @click="handleSearch(item)">
         <!-- {{}} 无法输出html字符内容 -->
         <!-- v-html指令才会解析字符串内容中的html -->
@@ -14,11 +14,12 @@
     </van-cell-group>
     <!-- /联想建议列表 -->
     <!-- 历史记录 -->
-    <!-- <van-cell-group>
+    <van-cell-group v-else>
       <van-cell title="历史记录">
         <van-icon slot="right-icon" name="delete" style="line-height: inherit;"/>
       </van-cell>
-    </van-cell-group> -->
+      <van-cell v-for="item in serachHistories" :key="item" :title="item" />
+    </van-cell-group>
     <!-- /历史记录 -->
   </div>
 </template>
@@ -31,7 +32,8 @@ export default {
   data () {
     return {
       searchText: '',
-      suggestions: []
+      suggestions: [],
+      searchHistories: JSON.parse(window.localStorage.getItem('serach-histories')) // 搜索历史记录
     }
   },
   watch: {
@@ -55,12 +57,22 @@ export default {
       return text.toLowerCase().split(keyword).join(`<span style="color: red;">${keyword}</span>`)
     },
     handleSearch (q) {
-      this.$router.push({
-        name: 'search-result',
-        params: {
-          q
-        }
-      })
+      if (!q.length) {
+        return
+      }
+      this.searchHistories.push(q)
+      // 保存搜索历史记录
+      window.localStorage.setItem(
+        'serach-histories',
+        JSON.stringify([...new Set(this.searchHistories)])
+      )
+      // 跳转到搜索页面
+      // this.$router.push({
+      //   name: 'search-result',
+      //   params: {
+      //     q
+      //   }
+      // })
       // this.$router.push('/search/' + q)
       // this.$router.push(`/search/${q}`)
     }
