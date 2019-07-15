@@ -61,6 +61,8 @@ export default {
           q
         }
       })
+      // this.$router.push('/search/' + q)
+      // this.$router.push(`/search/${q}`)
     }
   }
 }
