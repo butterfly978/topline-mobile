@@ -47,26 +47,26 @@ export default {
       console.log('路由变化了')
     }
   },
+  created () {
+    console.log('created')
+  },
   /**
    * 组件缓存的情况下：页面显示出来调用它
    */
   activated () {
-    this.loading = true
-    this.onLoad()
+    // this.loading = true
+    // this.onLoad()
   },
   /**
    * 组件缓存的情况下：页面隐藏调用它
    */
   deactivated () {
-    this.articles = []
-    this.page = 1
-  },
-  async created () {
-    const data = await getSearch({
-      q: this.$route.params.q,
-      page: 1
-    })
-    console.log(data)
+    // this.articles = []
+    // this.page = 1
+    // 如果觉得那样麻烦的话，也可以在组件缓存失活的时候，直接手动销毁这个组件
+    // 下次进来则会重新创建这个组件
+    // 说白了就是手动禁用了当前组件缓存
+    this.$destroy()
   },
   methods: {
     async onLoad () {
