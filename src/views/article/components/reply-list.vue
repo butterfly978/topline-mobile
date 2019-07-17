@@ -6,7 +6,9 @@
 export default {
   name: 'ReplyList',
   props: {},
-  data () {},
+  data () {
+    return {}
+  },
   created () {},
   methods: {}
 }

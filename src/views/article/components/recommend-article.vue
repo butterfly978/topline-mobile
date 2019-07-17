@@ -6,7 +6,9 @@
 export default {
   name: 'RecommendArticle',
   props: {},
-  data () {},
+  data () {
+    return {}
+  },
   created () {},
   methods: {}
 }

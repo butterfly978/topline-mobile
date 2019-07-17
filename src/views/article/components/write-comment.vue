@@ -6,7 +6,9 @@
 export default {
   name: 'WriteComment',
   props: {},
-  data () {},
+  data () {
+    return {}
+  },
   created () {},
   methods: {}
 }

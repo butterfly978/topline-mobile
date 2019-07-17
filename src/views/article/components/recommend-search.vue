@@ -6,7 +6,9 @@
 export default {
   name: 'RecommendSearch',
   props: {},
-  data () {},
+  data () {
+    return {}
+  },
   created () {},
   methods: {}
 }
