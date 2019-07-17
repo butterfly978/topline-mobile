@@ -24,9 +24,16 @@ export default () => {
     message: '该操作需要登录，是否登录？'
   }).then(() => {
     // 用户点击确定，跳转到登录页
+    // 写法一：
     router.push({
-      name: 'login'
+      name: 'login',
+      query: { // 传递查询字符串
+        // router.currentRoute 用于在非组件模块中获取当前路由对象
+        redirect: router.currentRoute.fullPath
+      }
     })
+    // 写法二：
+    // router.push('/login?redirect=/article/141349&a=1')
     // 登录成功，返回之前的页面
   }).catch(() => {
   })

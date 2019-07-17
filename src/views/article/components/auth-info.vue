@@ -28,7 +28,9 @@ export default {
       isFollowLoading: false
     }
   },
-  created () {},
+  created () {
+    console.log(this.$route)
+  },
   methods: {
     async handleFollow () {
       if (!this.$checkLogin()) {
