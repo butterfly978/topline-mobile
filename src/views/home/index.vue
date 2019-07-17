@@ -36,7 +36,7 @@
               列表中的内容
               对于模板中的错误，推荐的调试方式就是：
             -->
-            <van-cell v-for="item in channelItem.articles" :key="item.art_id.toString()" :title="item.title">
+            <van-cell v-for="item in channelItem.articles" :key="item.art_id.toString()" :title="item.title" @click="$router.push({ name: 'article', params: { articleId: item.art_id }})">
               <div slot="label">
                 <template v-if="item.cover.type">
                   <van-grid :border="false" :column-num="3">
