@@ -227,7 +227,7 @@ export default {
       } else {
         // 如果没有登录
         // 判断是否有本地存储的频道列表
-        const loadChannels = JSON.parses(window.localStorage.getItem('channels'))
+        const loadChannels = JSON.parse(window.localStorage.getItem('channels'))
         // 如果有，则使用
         if (loadChannels) {
           channels = loadChannels
