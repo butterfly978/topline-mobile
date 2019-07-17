@@ -4,7 +4,7 @@
     <h2 class="article-title">{{ article.title }}</h2>
     <AuthInfo class="auth-info" :article="article" />
     <div class="article-content" v-html="article.content"></div>
-    <MoreAction />
+    <MoreAction :article="article" />
     <RecommendSearch />
     <RecommendArticle />
     <CommentList />
