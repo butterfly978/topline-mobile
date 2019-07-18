@@ -1,6 +1,6 @@
 <template>
   <van-popup :value="value" @input="$emit('input', $event)" position="bottom" :style="{ height: '95%' }" @close="handleClose" @open="handleOpen">
-    <comment-list ref="comment-list" :source="commentId" :isArticle="false" />
+    <comment-list v-if="value" ref="comment-list" :source="commentId" :isArticle="false" />
     <write-comment :target="commentId" :article-id="articleId" />
   </van-popup>
 </template>
@@ -29,25 +29,7 @@ export default {
   data () {
     return {}
   },
-  created () {},
-  activated () {
-    console.log('activated')
-  },
-  methods: {
-    handleClose () {
-      // refs 有两个作用：
-      // 1. 获取 DOM
-      // 2. 获取一个组件
-      // 最简单粗暴的方式：直接通过 ref 拿到这个组件本身，操作里面的数据得到你想要的结果
-      this.$refs['comment-list'].comments = []
-      this.$refs['comment-list'].finished = false
-      this.$refs['comment-list'].offset = null
-    },
-    handleOpen () {
-      this.$refs['comment-list'].onLoad()
-      // this.$refs['comment-list'].loading = true
-    }
-  }
+  created () {}
 }
 </script>
 
