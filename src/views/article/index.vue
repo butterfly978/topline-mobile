@@ -5,8 +5,8 @@
     <AuthInfo class="auth-info" :article="article" />
     <div class="article-content" v-html="article.content"></div>
     <MoreAction :article="article" />
-    <RecommendSearch />
-    <RecommendArticle />
+    <!-- <RecommendSearch />
+    <RecommendArticle /> -->
     <CommentList />
     <ReplyList />
     <WriteComment />
@@ -17,8 +17,8 @@
 import AuthInfo from './components/auth-info'
 import CommentList from './components/comment-list'
 import MoreAction from './components/more-action'
-import RecommendArticle from './components/recommend-article'
-import RecommendSearch from './components/recommend-search'
+// import RecommendArticle from './components/recommend-article'
+// import RecommendSearch from './components/recommend-search'
 import ReplyList from './components/reply-list'
 import WriteComment from './components/write-comment'
 import { getArticleDetail } from '@/api/article'
@@ -29,8 +29,8 @@ export default {
     AuthInfo,
     CommentList,
     MoreAction,
-    RecommendArticle,
-    RecommendSearch,
+    // RecommendArticle,
+    // RecommendSearch,
     ReplyList,
     WriteComment
   },
