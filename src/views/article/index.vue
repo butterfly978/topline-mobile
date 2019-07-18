@@ -8,11 +8,13 @@
     <!-- <RecommendSearch />
     <RecommendArticle /> -->
     <!-- source 用来指定数据的 id，默认获取文章评论，如果是获取评论的回复列表，则指定 is-article 为 false -->
-    <CommentList :source="$route.params.articleId.toString()" @is-replylist-show="handleIsReplyListShow" />
+    <CommentList :source="articleId" @is-replylist-show="handleIsReplyListShow" />
     <!-- 回复列表组件 -->
-    <ReplyList v-model="isReplyListShow" :comment-id="commentId" />
+    <ReplyList v-model="isReplyListShow" :comment-id="commentId" :article-id="articleId" />
     <!-- /回复列表组件 -->
-    <WriteComment />
+    <!-- 发布评论组件 -->
+    <WriteComment :target="articleId" />
+    <!-- /发布评论组件 -->
   </div>
 </template>
 
@@ -55,6 +57,23 @@ export default {
       },
       isReplyListShow: false, // 控制回复组件的显示状态
       commentId: null // 点击回复的评论 id
+    }
+  },
+  /**
+   * 当你出现要在某个后代组件中访问组件成员的时候，那么可以使用 “依赖注入” 的方式
+   * 参考文档：https://cn.vuejs.org/v2/guide/components-edge-cases.html#%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5
+   * 使用方式：
+   *  1. 在组件中使用 provide 向后台提供数据
+   *  2. 然后在后代组件送使用 inject 声明接收祖先组件提供的数据
+   */
+  provide: function () {
+    return {
+      articleId: this.$route.params.articleId
+    }
+  },
+  computed: {
+    articleId () {
+      return this.$route.params.articleId.toString()
     }
   },
   created () {
