@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { getUserProfile } from '@/api/user'
+import { getUserProfile, updateUserProfile } from '@/api/user'
 export default {
   name: 'UserSettings',
   data () {
@@ -34,8 +34,15 @@ export default {
         this.$toast.fail('加载用户信息失败')
       }
     },
-    handleSave () {
-
+    async handleSave () {
+      try {
+        const data = await updateUserProfile({
+          name: 'lqz'
+        })
+        console.log(data)
+      } catch (err) {
+        this.$toast.fail('更新用户信息失败')
+      }
     }
   }
 }

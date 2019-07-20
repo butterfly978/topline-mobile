@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>html5-文件读取</title>
+</head>
+<body>
+  <div>
+    <img width="50" src="" id="img" alt="">
+  </div>
+  <div>
+      <input type="file" id="file">
+  </div>
+  <script>
+    const oFile = document.querySelector('#file')
+    const oImg = document.querySelector('img')
+    oFile.addEventListener('change', function (e) {
+      const file = e.target.files[0]
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.addEventListener("load", function () {
+        console.log(reader.result)
+        oImg.src = reader.result
+      }, false)
+    })
+  </script>
+</body>
+</html>
