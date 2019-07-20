@@ -39,6 +39,11 @@ export default new Router({
       name: 'user-settings',
       path: '/user-settings',
       component: () => import('@/views/user-settings')
+    },
+    {
+      name: 'chat',
+      path: '/chat',
+      component: () => import('@/views/chat')
     }
   ]
 })
