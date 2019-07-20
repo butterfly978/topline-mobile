@@ -1,7 +1,9 @@
 <template>
   <div>
     <!-- 头部 -->
-    <van-nav-bar title="首页" fixed/>
+    <div class="nav-bar" fixed>
+      <van-button class="sousou" round type="default"></van-button>
+    </div>
     <!-- /头部 -->
 
     <!-- 频道标签 -->
@@ -76,12 +78,7 @@
     <!-- /频道标签 -->
 
     <!-- 底部导航 -->
-    <van-tabbar route>
-      <van-tabbar-item icon="home-o" to="/">首页</van-tabbar-item>
-      <van-tabbar-item icon="search" to="/qa">问答</van-tabbar-item>
-      <van-tabbar-item icon="friends-o" to="/video">视频</van-tabbar-item>
-      <van-tabbar-item icon="setting-o" to="my">我的</van-tabbar-item>
-    </van-tabbar>
+    <app-tabbar/>
     <!-- /底部导航 -->
     <!-- 频道组件 -->
     <!-- :value="isChannelShow"
@@ -333,6 +330,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.nav-bar {
+  background-color: skyblue;
+  .sousou {
+    width: 80%;
+    height: 30px;
+  }
+}
 .channel-tabs {
   margin-bottom: 100px;
 }

@@ -2,6 +2,11 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import VeeValidate, { Validator } from 'vee-validate'
+import zhCN from 'vee-validate/dist/locale/zh_CN'
+import relativeTime from './filters/relative-time'
+import checkLogin from './utils/check-login'
+import AppTabbar from './components/app-tabbar'
 
 /**
  * 这个第三包引入即可，它会自动根据页面宽度设置网页基准字体大小
@@ -13,14 +18,11 @@ import 'amfe-flexible'
  */
 // import Vant from 'vant'
 // import { Lazyload } from 'vant'
+// 等价于上面的两句代码写法
 import Vant, { Lazyload } from 'vant'
 import 'vant/lib/index.css'
-import VeeValidate, { Validator } from 'vee-validate'
-import zhCN from 'vee-validate/dist/locale/zh_CN'
-import relativeTime from './filters/relative-time'
-import checkLogin from './utils/check-login'
 
-Vue.use(Vant)
+Vue.component('app-tabbar', AppTabbar)
 // 注册Vant的图片懒加载自定义指令
 Vue.use(Lazyload)
 // 注册一个全局过滤器：处理相对时间
@@ -29,6 +31,7 @@ Vue.use(VeeValidate, {
   events: '' // 禁用默认事件验证
 })
 Validator.localize('zh_CN', zhCN)
+Vue.use(Vant)
 
 /**
  * 后面我们再配置为按需引入的方式（减小代码打包体积）
