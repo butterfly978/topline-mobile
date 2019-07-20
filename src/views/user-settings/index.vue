@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { getUserProfile, updateUserProfile } from '@/api/user'
+import { getUserProfile, updateUserProfile, updateUserProfilePhoto } from '@/api/user'
 export default {
   name: 'UserSettings',
   data () {
@@ -24,15 +24,23 @@ export default {
       user: {}
     }
   },
+  computed: {
+    file () {
+      return this.$refs['file']
+    }
+  },
   created () {
     this.loadUser()
   },
   mounted () {
-    this.$refs['file'].addEventListener('change', this.handleFileChange)
+    this.file.addEventListener('change', this.handleFileChange)
+  },
+  deactivated () {
+    this.$destroy()
   },
   methods: {
     handleFileChange () {
-      const file = this.$refs['file'].files[0]
+      const file = this.file.files[0]
       const reader = new FileReader()
       reader.readAsDataURL(file)
       reader.addEventListener('load', () => {
@@ -46,14 +54,42 @@ export default {
         this.$toast.fail('加载用户信息失败')
       }
     },
+    // 异步串行
+    // await r1 1
+    // await r2 1
+    //          2
+    // 异步并行
+    // r1 1
+    // r2 1
+    //    1秒
+    // 如果需要在几个并发异步任务都执行结束之后做处理，则使用Promise.all([异步任务1,异步任务2....])
+    // Promise.all 还是返回promise,结果是一个数组，數組按照任务的顺序存储每个任务的执行结果
     async handleSave () {
       try {
-        const data = await updateUserProfile(this.user)
-        console.log(data)
+        let r1 = Promise.resolve()
+        // 一、如果用户选择了文件，则请求上传图片
+        if (this.file.files[0]) {
+          r1 = this.uploadPhoto()
+        }
+        // 二、请求更新用户信息
+        const r2 = updateUserProfile({
+          name: this.user.name,
+          gender: this.user.gender,
+          birthday: this.user.birthday
+        })
+        await Promise.all([r1, r2])
         this.$toast('更新成功')
       } catch (err) {
         this.$toast.fail('更新用户信息失败')
       }
+    },
+    uploadPhoto () {
+      /**
+       * 《接口要求 Content-Type 为 multipart/form-data 的处理》
+       */
+      const formData = new FormData()
+      formData.append('photo', this.file.files[0])
+      return updateUserProfilePhoto(formData)
     },
     handleShowFile () {
       this.$refs['file'].click()
