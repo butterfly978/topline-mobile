@@ -1,6 +1,10 @@
 import axios from 'axios'
 import store from '@/store'
 import JSONbig from 'json-bigint'
+import router from '@/router'
+const refreshTokenRequest = axios.create({
+  baseURL: 'http://ttapi.research.itcast.cn/'
+})
 
 /**
  * axios.create 用于创建一个 axios 实例，该实例和 axios 的功能是一模一样的
@@ -50,7 +54,39 @@ request.interceptors.response.use(function (response) {
   // 如果响应结果对象中有 data，则直接返回这个 data 数据
   // 如果响应结果对象中没有 data，则不作任何处理，直接原样返回这个数据
   return response.data.data || response.data
-}, function (error) {
+}, async error => {
+  console.dir(error)
+  // 如果状态码是401
+  if (error.response && error.response.status === 401) {
+    // 如果没有refresh_token，则直接跳转登录页
+    const { user } = store.state
+    // 如果user都没有，则直接跳转登录页
+    if (!user) {
+      return router.push({ name: 'login' })
+    }
+    // 如果有user，则请求刷新token
+    // 注意：这个请求不要使用request发送，使用一个没有任何副作用的请求对象去发送
+    try {
+      const res = await refreshTokenRequest({
+        method: 'PUT',
+        url: '/app/v1_0/authorizations',
+        headers: {
+          Authorization: `Bearer ${user.refresh_token}`
+        }
+      })
+      // 刷新用户token成功了
+      // 将新的token保存到store中
+      store.commit('setUser', {
+        token: res.data.data.token, // 重新获取的访问token
+        refresh_token: user.refresh_token // 原来的刷新token
+      })
+      // 把原来因为401失败的那个请求给继续发出去
+      return request(error.config)
+    } catch (err) {
+      // 刷新用户token失败了
+      return router.push({ name: 'login' })
+    }
+  }
   // Do something with response error
   return Promise.reject(error)
 })
