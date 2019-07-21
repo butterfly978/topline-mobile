@@ -2,7 +2,7 @@
   <div>
     <!-- 头部 -->
     <div class="nav-bar" fixed>
-      <van-button class="sousou" round type="default" icon="search"></van-button>
+      <van-button class="sousou" round type="default" icon="search" text="搜索"></van-button>
     </div>
     <!-- /头部 -->
 
@@ -332,14 +332,15 @@ export default {
 <style lang="less" scoped>
 .nav-bar {
   background-color: skyblue;
+  padding: 10px;
   display: flex;
   justify-content: center;
   text-align: center;
   .sousou {
     width: 85%;
-    height: 50px;
-    margin: 10px;
-
+    height: 70px;
+    // display: flex;
+    text-align: left;
   }
 }
 .channel-tabs {
